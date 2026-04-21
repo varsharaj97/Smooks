@@ -1,0 +1,48 @@
+plugins {
+    id 'org.springframework.boot' version '3.4.5'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    // Standard repository for most Java libraries
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot Starter - Core Spring Framework
+    implementation 'org.springframework.boot:spring-boot-starter'
+
+    // Spring Boot Web Starter for REST API
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Core Smooks Runtime (Required for Smooks 2.x)
+    implementation 'org.smooks:smooks-core:2.0.0-RC4'
+
+    // EDI Cartridge (Matches your current version)
+    implementation 'org.smooks.cartridges.edi:smooks-edi-cartridge:2.0.0-RC4'
+
+    // JavaBean Cartridge (Required for the <jb:bean> bindings in your config)
+    implementation 'org.smooks.cartridges:smooks-javabean-cartridge:2.0.0-RC4'
+
+    // Standard JUnit for testing
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+springBoot {
+    mainClass = 'org.example.EdiConverterApplication'
+}
