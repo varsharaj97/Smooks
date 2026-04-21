@@ -1,0 +1,40 @@
+<medi:edimap xmlns:medi="http://www.milyn.org/schema" version="1.0">
+    <medi:description>Mapping for EDI 852 Product Activity - Optimized for CSV</medi:description>
+    
+    <medi:delimiters segment="~" field="*" component=":" sub-component="^" />
+
+    <medi:segments xmltag="EDI852_Report">
+        <medi:segment segcode="ISA" xmltag="ISA" minOccurs="1" maxOccurs="1"/>
+        <medi:segment segcode="GS" xmltag="GS" minOccurs="1" maxOccurs="1"/>
+        
+        <medi:segmentGroup xmltag="852" minOccurs="1" maxOccurs="-1">
+            <medi:segment segcode="ST" xmltag="ST" />
+            <medi:segment segcode="XQ" xmltag="XQ" />
+            
+            <medi:segment segcode="N9" xmltag="N9" minOccurs="0" maxOccurs="5" />
+            <medi:segment segcode="N1" xmltag="N1" minOccurs="0" maxOccurs="5" />
+            <medi:segment segcode="DTM" xmltag="DTM" minOccurs="0" maxOccurs="5" />
+
+            <medi:segmentGroup xmltag="LIN-Loop" minOccurs="1" maxOccurs="-1">
+                <medi:segment segcode="LIN" xmltag="LIN">
+                    <medi:field xmltag="LineItemNum" />      <medi:field xmltag="ProdQual1" />      <medi:field xmltag="ProductId" />       <medi:field xmltag="ProdQual2" />      <medi:field xmltag="UPCCode" />         </medi:segment>
+                
+                <medi:segment segcode="PO4" xmltag="PO4" minOccurs="0" />
+                <medi:segment segcode="N9" xmltag="N9" minOccurs="0" />
+                <medi:segment segcode="ZA" xmltag="ZA" />
+                
+                <medi:segment segcode="CTP" xmltag="CTP">
+                    <medi:field xmltag="PriceQual" />      <medi:field xmltag="PriceId" />        <medi:field xmltag="UnitPrice" />      </medi:segment>
+                
+                <medi:segment segcode="SDQ" xmltag="SDQ">
+                    <medi:field xmltag="Unit" />           <medi:field xmltag="LocQual" />        <medi:field xmltag="LocationId" />     <medi:field xmltag="Quantity" />       </medi:segment>
+            </medi:segmentGroup>
+
+            <medi:segment segcode="CTT" xmltag="CTT" />
+            <medi:segment segcode="SE" xmltag="SE" />
+        </medi:segmentGroup>
+        
+        <medi:segment segcode="GE" xmltag="GE" />
+        <medi:segment segcode="IEA" xmltag="IEA" />
+    </medi:segments>
+</medi:edimap>
