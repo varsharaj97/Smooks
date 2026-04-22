@@ -26,18 +26,24 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     // Core Smooks Runtime (Required for Smooks 2.x)
+    implementation('org.smooks.cartridges.edi:smooks-edi-cartridge:2.0.0-RC4') {
+        exclude group: 'org.smooks.cartridges', module: 'smooks-dfdl-cartridge'
+    }
+
     implementation 'org.smooks:smooks-core:2.0.0-RC4'
-
-    // EDI Cartridge (Matches your current version)
-    implementation 'org.smooks.cartridges.edi:smooks-edi-cartridge:2.0.0-RC4'
-
-    // JavaBean Cartridge (Required for the <jb:bean> bindings in your config)
     implementation 'org.smooks.cartridges:smooks-javabean-cartridge:2.0.0-RC4'
+
+
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
     // Standard JUnit for testing
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
+
+//configurations.configureEach {
+    //exclude group: 'org.smooks.cartridges', module: 'smooks-dfdl-cartridge'
+//}
 
 test {
     useJUnitPlatform()

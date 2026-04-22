@@ -1,40 +1,65 @@
-<medi:edimap xmlns:medi="http://www.milyn.org/schema" version="1.0">
-    <medi:description>Mapping for EDI 852 Product Activity - Optimized for CSV</medi:description>
-    
-    <medi:delimiters segment="~" field="*" component=":" sub-component="^" />
+<edimap xmlns="http://www.milyn.org/schema/edi-message-mapping-1.7.xsd">
 
-    <medi:segments xmltag="EDI852_Report">
-        <medi:segment segcode="ISA" xmltag="ISA" minOccurs="1" maxOccurs="1"/>
-        <medi:segment segcode="GS" xmltag="GS" minOccurs="1" maxOccurs="1"/>
-        
-        <medi:segmentGroup xmltag="852" minOccurs="1" maxOccurs="-1">
-            <medi:segment segcode="ST" xmltag="ST" />
-            <medi:segment segcode="XQ" xmltag="XQ" />
-            
-            <medi:segment segcode="N9" xmltag="N9" minOccurs="0" maxOccurs="5" />
-            <medi:segment segcode="N1" xmltag="N1" minOccurs="0" maxOccurs="5" />
-            <medi:segment segcode="DTM" xmltag="DTM" minOccurs="0" maxOccurs="5" />
+    <description name="EDI 852 Product Activity"/>
 
-            <medi:segmentGroup xmltag="LIN-Loop" minOccurs="1" maxOccurs="-1">
-                <medi:segment segcode="LIN" xmltag="LIN">
-                    <medi:field xmltag="LineItemNum" />      <medi:field xmltag="ProdQual1" />      <medi:field xmltag="ProductId" />       <medi:field xmltag="ProdQual2" />      <medi:field xmltag="UPCCode" />         </medi:segment>
-                
-                <medi:segment segcode="PO4" xmltag="PO4" minOccurs="0" />
-                <medi:segment segcode="N9" xmltag="N9" minOccurs="0" />
-                <medi:segment segcode="ZA" xmltag="ZA" />
-                
-                <medi:segment segcode="CTP" xmltag="CTP">
-                    <medi:field xmltag="PriceQual" />      <medi:field xmltag="PriceId" />        <medi:field xmltag="UnitPrice" />      </medi:segment>
-                
-                <medi:segment segcode="SDQ" xmltag="SDQ">
-                    <medi:field xmltag="Unit" />           <medi:field xmltag="LocQual" />        <medi:field xmltag="LocationId" />     <medi:field xmltag="Quantity" />       </medi:segment>
-            </medi:segmentGroup>
+    <delimiters segment="~" field="*" component=":"/>
 
-            <medi:segment segcode="CTT" xmltag="CTT" />
-            <medi:segment segcode="SE" xmltag="SE" />
-        </medi:segmentGroup>
-        
-        <medi:segment segcode="GE" xmltag="GE" />
-        <medi:segment segcode="IEA" xmltag="IEA" />
-    </medi:segments>
-</medi:edimap>
+    <segments xmltag="Envelope">
+
+        <!-- Interchange -->
+        <segment segcode="ISA" xmltag="ISA"/>
+        <segment segcode="GS" xmltag="GS"/>
+
+        <!-- Transaction Set -->
+        <segment segcode="ST" xmltag="ST" maxOccurs="unbounded">
+
+            <field xmltag="TransactionSetId"/>
+            <field xmltag="ControlNumber"/>
+
+            <!-- Header segments -->
+            <segment segcode="XQ" xmltag="XQ" minOccurs="0"/>
+            <segment segcode="N9" xmltag="N9" minOccurs="0" maxOccurs="unbounded"/>
+            <segment segcode="N1" xmltag="N1" minOccurs="0" maxOccurs="unbounded"/>
+            <segment segcode="DTM" xmltag="DTM" minOccurs="0"/>
+
+            <!-- LIN LOOP -->
+            <segment segcode="LIN" xmltag="LIN" maxOccurs="unbounded">
+
+                <field xmltag="LineItemNum"/>     <!-- 783496 -->
+                <field xmltag="Qualifier1"/>      <!-- IN -->
+                <field xmltag="ProductId"/>       <!-- 990402230 -->
+                <field xmltag="Qualifier2"/>      <!-- UP -->
+                <field xmltag="UPCCode"/>         <!-- 072470006431 -->
+
+                <segment segcode="PO4" xmltag="PO4" minOccurs="0"/>
+                <segment segcode="N9" xmltag="N9" minOccurs="0"/>
+                <segment segcode="ZA" xmltag="ZA" minOccurs="0"/>
+
+                <!-- PRICE -->
+                <segment segcode="CTP" xmltag="CTP" minOccurs="0">
+                    <field xmltag="Empty"/>
+                    <field xmltag="PriceQualifier"/>   <!-- UCP -->
+                    <field xmltag="UnitPrice"/>        <!-- 12.29 -->
+                </segment>
+
+                <!-- QUANTITY -->
+                <segment segcode="SDQ" xmltag="SDQ" minOccurs="0">
+                    <field xmltag="Unit"/>          <!-- EA -->
+                    <field xmltag="Qualifier"/>     <!-- UL -->
+                    <field xmltag="LocationId"/>    <!-- 0605388006059 -->
+                    <field xmltag="Quantity"/>      <!-- 3 -->
+                </segment>
+
+            </segment>
+
+            <segment segcode="CTT" xmltag="CTT" minOccurs="0"/>
+            <segment segcode="SE" xmltag="SE"/>
+
+        </segment>
+
+        <segment segcode="GE" xmltag="GE"/>
+        <segment segcode="IEA" xmltag="IEA"/>
+
+    </segments>
+
+</edimap>

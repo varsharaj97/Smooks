@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.model.ProductActivityDetail;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ public class    EdiController {
         try {
             // Convert the file content to a byte array and process using EdiConverter
             byte[] fileBytes = file.getBytes();
-            List<String> results = ediConverter.processFile(fileBytes);
+            List<ProductActivityDetail> results = ediConverter.processFile(fileBytes);
 
             // Return the processed segments as a response
             return ResponseEntity.ok(results);

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/src/main/java/org/example/model/ProductActivityDetail.java;C:/Users/HP/IdeaProjects/SmooksEDI/src/main/java/org/example/EdiController.java;C:/Users/HP/IdeaProjects/SmooksEDI/src/main/java/org/example/EdiConverter.java;C:/Users/HP/IdeaProjects/SmooksEDI/src/main/java/org/example/EdiConverterApplication.java;C:/Users/HP/IdeaProjects/SmooksEDI/settings.gradle.kts" />
+  </component>
+</project>

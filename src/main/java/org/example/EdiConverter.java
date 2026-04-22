@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.model.ProductActivityDetail;
 import org.smooks.Smooks;
 import org.smooks.api.ExecutionContext;
 import org.smooks.io.payload.JavaResult;
@@ -15,39 +16,27 @@ import java.util.List;
 @Service
 public class EdiConverter {
 
-    public List<String> processFile(byte[] fileBytes) {
-        List<String> processedSegments = new ArrayList<>();
+    public List<ProductActivityDetail> processFile(byte[] fileBytes) {
+        try (Smooks smooks = new Smooks("/smooks-config.xml")) {
 
-        // Convert the input EDI bytes into a String (Presuming it's UTF-8 Encoded).
-        String ediData = new String(fileBytes, StandardCharsets.UTF_8);
-
-        // Initialize Smooks
-        try (Smooks smooks = new Smooks("/smooks.config.xml")) {
-            // Create an ExecutionContext for the EDI message processing
             ExecutionContext executionContext = smooks.createExecutionContext();
-
-            // Parse and bind the EDI message data into result
             JavaResult javaResult = new JavaResult();
-            smooks.filterSource(executionContext, new StreamSource(new ByteArrayInputStream(fileBytes)), javaResult);
 
-            // Assuming the Smooks mapping results in a List<String> called "segments"
-            List<String> ediSegments = (List<String>) javaResult.getBean("itemList");
+            smooks.filterSource(
+                    executionContext,
+                    new StreamSource(new ByteArrayInputStream(fileBytes)),
+                    javaResult
+            );
 
-            if (ediSegments != null) {
-                processedSegments.addAll(ediSegments); // Store the segments for processing further
-            }
+            List<ProductActivityDetail> itemList =
+                    (List<ProductActivityDetail>) javaResult.getBean("itemList");
+
+            System.out.println(javaResult.getBean("productActivityReport"));
+
+            return itemList != null ? itemList : new ArrayList<>();
+
         } catch (Exception e) {
-            throw new IllegalStateException("Failed to process EDI file with Smooks", e);
+            throw new RuntimeException(e);
         }
-
-        return processedSegments;
-    }
-
-    private String getSafe(List<String> elements, int index) {
-        if (index < 0 || index >= elements.size()) {
-            return null; // Avoid IndexOutOfBoundsException
-
-        }
-        return elements.get(index);
     }
 }
