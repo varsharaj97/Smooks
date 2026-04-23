@@ -1,4 +1,4 @@
-<edimap xmlns="http://www.milyn.org/schema/edi-message-mapping-1.7.xsd">
+<edimap xmlns="https://www.smooks.org/xsd/smooks/edi-2.0.xsd">
 
     <description name="EDI 852 Product Activity"/>
 

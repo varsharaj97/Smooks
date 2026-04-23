@@ -8,6 +8,9 @@ import org.smooks.io.source.ByteSource;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PreDestroy;
+
+import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,10 @@ public class EdiConverter {
     public List<ProductActivityDetail> processFile(byte[] fileBytes) {
         try {
             ExecutionContext executionContext = smooks.createExecutionContext();
+            // Input
+            //StreamSource source = new StreamSource(new ByteArrayInputStream(fileBytes));
+
+// Output
             JavaSink javaSink = new JavaSink();
 
             smooks.filterSource(
@@ -47,7 +54,9 @@ public class EdiConverter {
             return itemList != null ? itemList : new ArrayList<>();
 
         } catch (Exception e) {
-            throw new IllegalStateException("Failed to process the uploaded EDI document.", e);
+            // This will now print the actual cause (e.g. EDI parsing error) to your logs
+            e.printStackTrace();
+            throw new RuntimeException("Failed to process EDI: " + e.getMessage(), e);
         }
     }
 

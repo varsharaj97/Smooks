@@ -2,7 +2,10 @@
                       xmlns:jb="https://www.smooks.org/xsd/smooks/javabean-1.6.xsd"
                       xmlns:edi="https://www.smooks.org/xsd/smooks/edi-2.0.xsd">
 
-        <edi:parser schemaUri="classpath:/edi852-mapping.edimap"/>
+    <resource-config selector="org.xml.sax.driver">
+        <resource>org.smooks.cartridges.edi.reader.EdiReader</resource>
+        <param name="mappingModel">/edi852-mapping.edimap</param>
+    </resource-config>
 
         <!-- Root bean -->
         <jb:bean beanId="productActivityReport" class="java.util.HashMap" createOnElement="ST">

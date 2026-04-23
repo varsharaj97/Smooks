@@ -19,22 +19,19 @@ public class    EdiController {
         this.ediConverter = ediConverter;
     }
 
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload", produces = "text/csv")
     @ResponseBody
     public ResponseEntity<?> uploadEdiFile(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("File is empty. Please upload a valid EDI file.");
+            return ResponseEntity.badRequest().body("File is empty.");
         }
 
         try {
-            // Convert the file content to a byte array and process using EdiConverter
-            byte[] fileBytes = file.getBytes();
-            List<ProductActivityDetail> results = ediConverter.processFile(fileBytes);
-
-            // Return the processed segments as a response
-            return ResponseEntity.ok(results);
+            List<ProductActivityDetail> csvResult = ediConverter.processFile(file.getBytes());
+            return ResponseEntity.ok(csvResult);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage());
+            // Return the actual error message to Postman for easier debugging
+            return ResponseEntity.status(500).body("Error: " + e.getMessage());
         }
     }
 }
