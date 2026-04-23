@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PreDestroy;
 
-import javax.xml.transform.stream.StreamSource;
-import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class EdiConverter {
         } catch (Exception e) {
             throw new IllegalStateException(
                     "Failed to initialize Smooks from '/smooks-config.xml'. " +
-                            "Verify that all Smooks modules use the same release and that the runtime classpath is refreshed.",
+                            "Verify that the Smooks config and DFDL schema match the X12 payload.",
                     e
             );
         }
@@ -34,30 +33,36 @@ public class EdiConverter {
     public List<ProductActivityDetail> processFile(byte[] fileBytes) {
         try {
             ExecutionContext executionContext = smooks.createExecutionContext();
-            // Input
-            //StreamSource source = new StreamSource(new ByteArrayInputStream(fileBytes));
-
-// Output
             JavaSink javaSink = new JavaSink();
+            byte[] normalizedFileBytes = normalizeEdi(fileBytes);
 
             smooks.filterSource(
                     executionContext,
-                    new ByteSource(fileBytes),
+                    new ByteSource(normalizedFileBytes),
                     javaSink
             );
 
             List<ProductActivityDetail> itemList =
                     (List<ProductActivityDetail>) javaSink.getBean("itemList");
 
-            System.out.println(javaSink.getBean("productActivityReport"));
-
             return itemList != null ? itemList : new ArrayList<>();
-
         } catch (Exception e) {
-            // This will now print the actual cause (e.g. EDI parsing error) to your logs
-            e.printStackTrace();
-            throw new RuntimeException("Failed to process EDI: " + e.getMessage(), e);
+            throw new RuntimeException("Failed to process EDI: " + getRootCauseMessage(e), e);
         }
+    }
+
+    private String getRootCauseMessage(Throwable throwable) {
+        Throwable current = throwable;
+        while (current.getCause() != null && current.getCause() != current) {
+            current = current.getCause();
+        }
+        return current.getMessage() != null ? current.getMessage() : current.getClass().getName();
+    }
+
+    private byte[] normalizeEdi(byte[] fileBytes) {
+        String edi = new String(fileBytes, StandardCharsets.UTF_8);
+        edi = edi.replace("\r", "").replace("\n", "");
+        return edi.getBytes(StandardCharsets.UTF_8);
     }
 
     @PreDestroy

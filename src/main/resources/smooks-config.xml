@@ -2,35 +2,27 @@
                       xmlns:jb="https://www.smooks.org/xsd/smooks/javabean-1.6.xsd"
                       xmlns:edi="https://www.smooks.org/xsd/smooks/edi-2.0.xsd">
 
-    <resource-config selector="org.xml.sax.driver">
-        <resource>org.smooks.cartridges.edi.reader.EdiReader</resource>
-        <param name="mappingModel">/edi852-mapping.edimap</param>
-    </resource-config>
+    <edi:parser
+            schemaUri="/edi.dfdl.xsd"
+            segmentTerminator="~"
+            dataElementSeparator="*"
+            compositeDataElementSeparator=":" />
 
-        <!-- Root bean -->
-        <jb:bean beanId="productActivityReport" class="java.util.HashMap" createOnElement="ST">
-            <jb:wiring property="items" beanIdRef="itemList"/>
-        </jb:bean>
-
-        <!-- List of items -->
-        <jb:bean beanId="itemList" class="java.util.ArrayList" createOnElement="ST">
-            <jb:wiring beanIdRef="itemDetail"/>
-        </jb:bean>
-
-        <!-- Each LIN loop -->
-    <jb:bean beanId="itemDetail"
-             class="org.example.model.ProductActivityDetail"
-             createOnElement="LIN">
-
-        <jb:value property="lineItemNumber" data="LIN/LineItemNum"/>
-        <jb:value property="productId" data="LIN/ProductId"/>
-        <jb:value property="upcCode" data="LIN/UPCCode"/>
-
-        <jb:value property="unitPrice" data="CTP/UnitPrice"/>
-
-        <jb:value property="quantity" data="SDQ/Quantity"/>
-        <jb:value property="locationId" data="SDQ/LocationId"/>
-
+    <jb:bean beanId="itemList" class="java.util.ArrayList" createOnElement="Transaction852">
+        <jb:wiring beanIdRef="itemDetail" />
     </jb:bean>
 
-    </smooks-resource-list>
+    <jb:bean beanId="itemDetail"
+             class="org.example.model.ProductActivityDetail"
+             createOnElement="Loop_LIN">
+        <jb:value property="refNum" data="N9/ReferenceIdentification" />
+        <jb:value property="lineItemNumber" data="LIN/AssignedIdentification" />
+        <jb:value property="productId" data="LIN/ProductId" />
+        <jb:value property="upcCode" data="LIN/UPCCode" />
+        <jb:value property="activity" data="Loop_ZA/ZA/ActivityCode" />
+        <jb:value property="unitPrice" data="Loop_ZA/CTP/UnitPrice" />
+        <jb:value property="quantity" data="Loop_ZA/SDQ/Quantity" />
+        <jb:value property="locationId" data="Loop_ZA/SDQ/LocationId" />
+    </jb:bean>
+
+</smooks-resource-list>

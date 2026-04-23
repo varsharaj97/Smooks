@@ -1,0 +1,244 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/"
+           xmlns:ibmEdiFmt="http://www.ibm.com/dfdl/EDI/Format">
+
+    <xs:import namespace="http://www.ibm.com/dfdl/EDI/Format"
+               schemaLocation="EDIFACT-Common/IBM_EDI_Format.dfdl.xsd"/>
+
+    <xs:annotation>
+        <xs:appinfo source="http://www.ogf.org/dfdl/dfdl-1.0/">
+            <dfdl:format ref="ibmEdiFmt:EDIFormat"/>
+        </xs:appinfo>
+    </xs:annotation>
+
+    <xs:element name="X12_852_Interchange">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ISA" type="ISA_Segment"
+                            dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                            dfdl:initiator="ISA"/>
+                <xs:element name="FunctionalGroup" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="GS" type="GS_Segment"
+                                        dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                        dfdl:initiator="GS"/>
+                            <xs:element name="Transaction852" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="ST" type="ST_Segment"
+                                                    dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                                    dfdl:initiator="ST"/>
+                                        <xs:element name="XQ" type="XQ_Segment"
+                                                    dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                                    dfdl:initiator="XQ"/>
+                                        <xs:element name="N9" type="N9_Segment" minOccurs="0" maxOccurs="unbounded"
+                                                    dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                                    dfdl:initiator="N9"/>
+                                        <xs:element name="N1" type="N1_Segment" minOccurs="0" maxOccurs="unbounded"
+                                                    dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                                    dfdl:initiator="N1"/>
+                                        <xs:element name="DTM" type="DTM_Segment" minOccurs="0"
+                                                    dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                                    dfdl:initiator="DTM"/>
+                                        <xs:element name="Loop_LIN" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="LIN" type="LIN_Segment"
+                                                                dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                                                dfdl:initiator="LIN"/>
+                                                    <xs:element name="PO4" type="PO4_Segment" minOccurs="0"
+                                                                dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                                                dfdl:initiator="PO4"/>
+                                                    <xs:element name="N9" type="N9_Segment" minOccurs="0"
+                                                                dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                                                dfdl:initiator="N9"/>
+                                                    <xs:element name="Loop_ZA" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="ZA" type="ZA_Segment"
+                                                                            dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                                                            dfdl:initiator="ZA"/>
+                                                                <xs:element name="CTP" type="CTP_Segment" minOccurs="0"
+                                                                            dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                                                            dfdl:initiator="CTP"/>
+                                                                <xs:element name="SDQ" type="SDQ_Segment" minOccurs="0" maxOccurs="unbounded"
+                                                                            dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                                                            dfdl:initiator="SDQ"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="CTT" type="CTT_Segment"
+                                                    dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                                    dfdl:initiator="CTT"/>
+                                        <xs:element name="SE" type="SE_Segment"
+                                                    dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                                    dfdl:initiator="SE"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="GE" type="GE_Segment"
+                                        dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                                        dfdl:initiator="GE"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="IEA" type="IEA_Segment"
+                            dfdl:ref="ibmEdiFmt:EDISegmentFormat"
+                            dfdl:initiator="IEA"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="ISA_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="AuthorizationInfoQualifier" type="xs:string"/>
+            <xs:element name="AuthorizationInformation" type="xs:string"/>
+            <xs:element name="SecurityInfoQualifier" type="xs:string"/>
+            <xs:element name="SecurityInformation" type="xs:string"/>
+            <xs:element name="InterchangeSenderQualifier" type="xs:string"/>
+            <xs:element name="InterchangeSenderId" type="xs:string"/>
+            <xs:element name="InterchangeReceiverQualifier" type="xs:string"/>
+            <xs:element name="InterchangeReceiverId" type="xs:string"/>
+            <xs:element name="InterchangeDate" type="xs:string"/>
+            <xs:element name="InterchangeTime" type="xs:string"/>
+            <xs:element name="RepetitionSeparator" type="xs:string"/>
+            <xs:element name="ControlVersionNumber" type="xs:string"/>
+            <xs:element name="InterchangeControlNumber" type="xs:string"/>
+            <xs:element name="AcknowledgmentRequested" type="xs:string"/>
+            <xs:element name="UsageIndicator" type="xs:string"/>
+            <xs:element name="ComponentElementSeparator" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GS_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="FunctionalIdentifierCode" type="xs:string"/>
+            <xs:element name="ApplicationSenderCode" type="xs:string"/>
+            <xs:element name="ApplicationReceiverCode" type="xs:string"/>
+            <xs:element name="GroupDate" type="xs:string"/>
+            <xs:element name="GroupTime" type="xs:string"/>
+            <xs:element name="GroupControlNumber" type="xs:string"/>
+            <xs:element name="ResponsibleAgencyCode" type="xs:string"/>
+            <xs:element name="VersionReleaseIndustryIdentifierCode" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ST_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="TransactionSetIdentifierCode" type="xs:string"/>
+            <xs:element name="TransactionSetControlNumber" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="XQ_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="ReportingCode" type="xs:string"/>
+            <xs:element name="Date" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="N9_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="ReferenceIdentificationQualifier" type="xs:string"/>
+            <xs:element name="ReferenceIdentification" type="xs:string"/>
+            <xs:element name="FreeFormDescription" type="xs:string" minOccurs="0"/>
+            <xs:element name="Date" type="xs:string" minOccurs="0"/>
+            <xs:element name="Time" type="xs:string" minOccurs="0"/>
+            <xs:element name="TimeCode" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="N1_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="EntityIdentifierCode" type="xs:string"/>
+            <xs:element name="Name" type="xs:string"/>
+            <xs:element name="IdentificationCodeQualifier" type="xs:string" minOccurs="0"/>
+            <xs:element name="IdentificationCode" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DTM_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="DateTimeQualifier" type="xs:string"/>
+            <xs:element name="Date" type="xs:string"/>
+            <xs:element name="Time" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LIN_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="AssignedIdentification" type="xs:string"/>
+            <xs:element name="ProductServiceIdQualifier1" type="xs:string"/>
+            <xs:element name="ProductId" type="xs:string"/>
+            <xs:element name="ProductServiceIdQualifier2" type="xs:string" minOccurs="0"/>
+            <xs:element name="UPCCode" type="xs:string" minOccurs="0"/>
+            <xs:element name="ProductServiceIdQualifier3" type="xs:string" minOccurs="0"/>
+            <xs:element name="ProductId3" type="xs:string" minOccurs="0"/>
+            <xs:element name="ProductServiceIdQualifier4" type="xs:string" minOccurs="0"/>
+            <xs:element name="ProductId4" type="xs:string" minOccurs="0"/>
+            <xs:element name="ProductServiceIdQualifier5" type="xs:string" minOccurs="0"/>
+            <xs:element name="ProductId5" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PO4_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="Pack" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ZA_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="ActivityCode" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CTP_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="ClassOfTradeCode" type="xs:string" minOccurs="0"/>
+            <xs:element name="PriceIdentifierCode" type="xs:string" minOccurs="0"/>
+            <xs:element name="UnitPrice" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SDQ_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="UnitOrBasisForMeasurementCode" type="xs:string"/>
+            <xs:element name="IdentificationCodeQualifier" type="xs:string"/>
+            <xs:element name="LocationId" type="xs:string"/>
+            <xs:element name="Quantity" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CTT_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="NumberOfLineItems" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SE_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="NumberOfIncludedSegments" type="xs:string"/>
+            <xs:element name="TransactionSetControlNumber" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GE_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="NumberOfTransactionSetsIncluded" type="xs:string"/>
+            <xs:element name="GroupControlNumber" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="IEA_Segment">
+        <xs:sequence dfdl:ref="ibmEdiFmt:EDISegmentSequenceFormat">
+            <xs:element name="NumberOfIncludedFunctionalGroups" type="xs:string"/>
+            <xs:element name="InterchangeControlNumber" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

@@ -23,13 +23,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    //Smooks
     implementation "org.smooks:smooks-core:${smooksVersion}"
     implementation "org.smooks.cartridges.edi:smooks-edi-cartridge:${smooksVersion}"
     implementation "org.smooks.cartridges:smooks-javabean-cartridge:${smooksVersion}"
-    implementation "org.smooks.cartridges:smooks-csv-cartridge:${smooksVersion}"
-    //implementation "org.smooks.cartridges.ftl:smooks-ftl-cartridge:${smooksVersion}"
-
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'

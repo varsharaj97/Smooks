@@ -2,14 +2,24 @@ package org.example.model;
 
 public class ProductActivityDetail {
 
+    private String refNum;
     private String lineItemNumber;
     private String productId;
     private String upcCode;
+    private String activity;
     private String unitPrice;
     private String quantity;
     private String locationId;
 
     // Getters & Setters
+
+    public String getRefNum() {
+        return refNum;
+    }
+
+    public void setRefNum(String refNum) {
+        this.refNum = refNum;
+    }
 
     public String getLineItemNumber() {
         return lineItemNumber;
@@ -33,6 +43,14 @@ public class ProductActivityDetail {
 
     public void setUpcCode(String upcCode) {
         this.upcCode = upcCode;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
     }
 
     public String getUnitPrice() {
